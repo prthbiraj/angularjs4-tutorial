@@ -1,0 +1,460 @@
+ES 5 ,ES 6
+
+>ES 6,5 Setup:
+
+>node --version
+
+>npm install create-react-app -g 
+
+>Project Setup:
+
+>create-react-app  es5-es6-app
+
+>C:\Users\admin\AppData\Roaming\npm
+
+>IDE
+  >any text editor
+  >sublime,notepad++,brackets,atom,visual studio code.
+>code .
+>index.js
+Start the Web Server
+es5-es6-app>npm start
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Angular Project stack:
+                   
+                    Angular Project  + Reactive Programming + Unit Testing(Chai,mocha,Jasmine)
+                         |
+                     Type script
+                         |
+                     ES 6 and ES 7
+                         |
+                     ES5,ES4,ES3
+
+ES 5 & ES6:
+>Language fundamentals
+>Functions
+>Object oriented Programming and implementation
+>DOM programming - dynamic html building - Angular,Jquery,react.js..
+>AJAX Programming - Connecting to WebService layer - XHR 
+
+TypeScript:
+>Language Fundamentals
+>Functions
+>OO
+
+>Angular
+ >Using typescript build DOM Programming
+
+ ES 5 & ES6:
+>Language fundamentals
+  >type system,variables,literals
+  >operators
+  >control statements ,looping statements
+
+Type system:
+Javascript is type free pl.No type is mentioned during programming
+>Type of pl
+  >Strongly typed
+    Type of the variable must be mentioned during declaration
+     like c,c++,java,C#
+      eg int x=100;
+          x="hello" // compile time error
+    cons:
+      >Type casting
+  >weakly typed
+     Type of the variable not mentioned during declaration
+      eg; javascript,lisp
+    javascript : var x=100;
+                 x="hello" //no error
+    cons: type interchange
+    pros: no casting,improves performance.
+
+Transpilling vs Compiling
+
+>compiling is nothing but source code to intermediate code
+>Transpiling is nothing converting source code to another source code.
+ES 6 ---transpile - es 4,5,3
+          |
+          babel.js
+typescript - tranpile - es 5,4,3
+               |
+              tsc
+//////////////////////////////////////////////////////////////////
+
+In non javascript:
+int x=100;
+ |   | |  
+        value(literal)
+
+100 -Value (literal)
+=  - Assignment operator
+x -  variable
+int - type
+
+var x=100;
+
+100 -Value (literal)
+=  - Assignment operator
+x -  variable
+var - keyword
+
+>literal in java,c#
+numbers(int,float)
+char
+boolean
+Reference type - Object type - string
+
+>javascript literals
+>number,string,boolean,undefined,NaN,infinity,function,null,object
+
+>Variable declaration
+1.using var keyword - es 5 
+2.using this keyword - es 5 and es 6
+3.using let and const  - only es 6
+>Demo using basic literals
+/**
+ * Variables and literals
+ */
+//using var - number,string,boolean,undefined,NaN,Infinity
+
+//number : only one number type.its size 64 bit by default(double)
+
+var count = 100;
+console.log('Counter - Number = ' + count);
+//String: 
+/**
+ * string literal is collection of 16 bit unicode characters
+ * string literals are represented  - "" or  '' or ``(es6)
+ */
+//var name = "Subramanian";
+var name = 'Subramanian';
+console.log("name " + name);
+///////////
+//`` back -tick notation - String template literal
+var subject = `Angular`;
+console.log("Subject " + subject);
+//Special use cases of back-tick/string template
+//Multi line string
+//es 5
+/* var htmlDoc = "<html>" +
+    "<head>" +
+    "<title>Hello</title>" +
+    "<body>" +
+    "<h1>Welcome</h1>" +
+    "</body></html>"; */
+//es 6
+var htmlDoc = `<html>
+               <head>
+               <title>Hello</title>
+               <body>
+               <h1>Welcome</h1>
+               </body></html>
+              `;
+
+console.log(htmlDoc);
+//Variable + string concation
+var street = '10th street';
+var city = 'Mumbai';
+var address = street + city; // es 5
+console.log("Address" + address); //es 5
+var addr = `${street} ${city}`; //es 6
+console.log(`Address ${addr}`); //es 6
+
+//boolean
+var isWorking = true;
+console.log(`Is Working ${isWorking}`);
+//undefined
+var score; // variables does not have any valid 
+//literal(string, number, boolean, object, function)
+console.log(`Score is ${score}`);
+
+//NaN - Not a Number
+/**
+ * Not a Number is number interally
+ * NaN represents error code- numerical compuation error code
+ * Type conversion - string to number happens implicitly by default
+ *                  - we can use parseInt (32 bit) or parseFloat(64 bit)
+ * if parsing error,the output will be NaN.
+ */
+//var totalScore = score * 100;
+
+var totalScore = "$2333" * 100; //type parsing error
+var totalPrice = parseInt("$2333") * 100;
+console.log(`Total Score ${totalScore}`);
+console.log(`Total Price ${totalPrice}`);
+
+//////////////////////////////////////////////////////////////////
+//Infinity : divide by 0
+var math = 80;
+var avgMarks = math / 0;
+console.log(`Avg Marks ${avgMarks}`);
+//////////////////////////////////////////////////////////////////
+//introducing let and const
+/**
+ * let is replacer for var in es 6
+ * let i will explain latter. why let why not var
+ *note: dont use var in es 6 based application.
+ */
+let hero = 'Super Man'; // pure es 6 declaration
+console.log(`hero ${hero}`);
+
+//const : constant 
+const pi = 3.14;
+//pi = 90;//not possible
+console.log(`Pi ${pi}`);
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+operators:
+> equal   == and ===
+> and and or  = && ,||
+> new  - oo
+> type of
+
+/**
+ * operators
+ */
+let x = "100"; //string
+let y = 100; //number
+//let result = x == y;   // string == number = false
+/**
+ * === compares type + value
+ *  == compares only value
+ * Note: You must use always ===
+ */
+let result = x === y;
+
+console.log(` x==y ${result}`);
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//or 
+/**
+ * or and works based on truth table
+ *  true true true
+ *  false false false
+ */
+
+let isWorking = true;
+let hasProject = true;
+let promotionStatus = isWorking || hasProject;
+console.log(`Promotionstatus ${promotionStatus}`);
+
+let name = '';
+let score = 80;
+
+let gameStatus = name || score;
+/**
+ * if you want to understand the above code, you need to understand
+ * one simple formula
+ *  "if the first operand is truthy, the result is first else second"
+ *
+ *Falsy values:
+  1.boolean false
+  2. 0
+  3. "" or ''
+ *4.NaN
+  5.null
+  6.undefined
+   Exepect these values every thing is true
+    "false" "0"
+ *
+ */
+console.log(`Game status ${gameStatus}`);
+//////////////////////////////////////////////////////////
+let mylocation = mylocation || 'Mumbai';
+console.log(`mylocation ${mylocation}`);
+let price;
+let productPrice = price || 10;
+console.log(`productPrice ${productPrice}`);
+/////////////////////////////////////////////////////////////////
+
+let hero;
+let status = hero ? "You are hero" : "You are not hero";
+console.log(status);
+let count = 0;
+if (hero) { //truthy
+    console.log(`You are hero`)
+} else {
+    console.log(`You are not hero`)
+}
+if (count) { //truthy /falsy
+    console.log(`you got counter`)
+} else {
+    console.log(`you did not get counter`)
+}
+//! !!(inverter)
+//type of :  identifies data of variable.
+//typeof operator gives output in string representaion
+// and smaller case typeof 10 - 'number'
+let myPrice = 200;
+console.log(typeof myPrice);
+console.log(typeof hero);
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Function as literal:
+/**
+ * Functions
+ * 1.In javascript code is organized inside functions
+ * 2.function is just literal like other literals
+ * 3.functions can take parameter and return value
+ * Roles of functions:
+ * >normal function
+ *   function just hold  program logic
+ * >function can act as class in oo
+ * >call back functions -  Asyn programming
+ * >Closures  - nested functions - no discussion in this topic
+ * >Curry function - no discusssion in this topic
+ *
+ * How to declare function and how to invoke them?
+ *  function nameOfFunction(){
+ * }
+ */
+//basic function declaration and invocation
+//declaration
+function sayHello() {
+    let name = 'Subramanian'
+    console.log(`Hello! ${name}`);
+}
+//invoke
+sayHello();
+//function args and parameters
+/**
+ * parameter vs args
+ *
+ * function sayHai(name){
+ *
+ * }
+ * sayHai('subramanian')
+ *'subramanian' - parameter
+   name - arg
+   es 6 has syntax to initalize the default value
+   name = 'default' = default argument
+   javascript is positional parameters
+ */
+function sayHai(name = 'default', address = 'Chennai') {
+    //  console.log(`Hai! ${name}`);
+    return `Hai ${name} ${address};`
+    //return; //undefined  
+}
+console.log(sayHai('subramanian', 'Mumbai'));
+console.log(sayHai());
+//sayHai(9999);
+//...arg - es 6 spread operator
+function logger(appname, ...arg) {
+    //console.log(arguments);
+    console.log(`${appname} ${arg}`);
+}
+logger('erp', 'hai');
+logger('mobile app', 'welcome', 'hai');
+logger('Web app', 'success', 'error', 'waring');
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//function parameter
+/**
+ * function parameter could by any nine literals(number,string,function)
+ */
+///////////////////Function as a literal
+/**
+ * literal means can be assigned to a variable
+ *  let name = 'subramanian'
+ *  let sayHai  = function (){}
+ *
+ * Rule:
+ * function can be assigned to a variable-How because it is literal.
+ * The variable can refer function.
+ * The variable can be latter used to invoke assigned function
+ *
+ * Patterns to declare function literal
+ */
+//pattern 1
+/* function sayHai(name = 'default', address = 'Chennai') {
+    //  console.log(`Hai! ${name}`);
+    return `Hai ${name} ${address};`
+    //return; //undefined  
+}
+sayHai(); */
+//pattern 2 -  2.1 / 2.2
+//2.1
+function sayGreet(name = 'default') {
+    //console.log('Greet');
+    return `Greet ${name}`;
+}
+let greet = sayGreet; // function literal pattern
+console.log(greet('subramanian'));
+//2.2
+let greetMe = function sayGreeterAgain(name = 'default') {
+    return `GreetMe ${name}`;
+};
+console.log(greetMe('Subramanian'));
+//console.log(sayGreeterAgain('Subramanian'));
+//2.3 anonomous function pattern
+let greetMeOnce = function (name = 'default') {
+    return `GreetMe ${name}`;
+};
+console.log(greetMeOnce('Subramanian'));
+///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//es 6 function literal pattern - Arrow Functions
+/**
+ * Arrow function simpfiles function literals.
+ * Makes clean code with simple syntax.
+ */
+//Simple Arrow
+/* let print = () => {
+    console.log('Print function!');
+}; */
+//function having single statement
+//let print = () => console.log('Print function!');
+//function having arg - single arg without default value
+//let print = (message) => console.log(message);
+//let print = message => console.log(message);
+//print('hello');
+//function having only return value
+/* let print = () => { 
+    return 'Welcome';
+}; */
+//let print = () => 'Welcome';
+//function having single arg and single return value
+//let print = message => message;
+//console.log(print('Welcome'));
+//multi line
+let print = (name = 'default', age = 18) => {
+    let message = 'welcome';
+    return `${message} ${name} ${age}`
+};
+console.log(print());
+
+  
+/**
+ * function as parameter
+ */
+function add(a, b) {
+    return a + b;
+}
+//we can pass values in two ways
+console.log(add(100, 100)); //passing literal dirctly
+let x = 100;
+let y = 100;
+console.log(add(x, y)); //passing variables having  values
+////////////////////////////////////////////////////////////////////
+
+function sayHello(message) {
+    let result = message('Subramanian');
+    console.log(result);
+}
+//passing function via variable
+
+let hello = function (name) {
+    //console.log(`Hello! ${name}`);
+    return `Hello! ${name}`
+};
+sayHello(hello);
+//direct literal pattern
+sayHello(function (name) {
+    // console.log(`Hai! ${name}`);
+    return `Hai! ${name}`
+});
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/* function sayHello(message) {
+    let result = message('Subramanian');
+    console.log(result);
+} */
+let greetMe = message => console.log(message('Subramanian'));
+let welcome = name => `Welcome ${name}`;
+greetMe(welcome);
+greetMe(name => `Welcome ${name}`);
