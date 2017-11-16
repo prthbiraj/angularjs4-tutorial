@@ -207,7 +207,7 @@ console.log(`Pi ${pi}`);
 operators:
 > equal   == and ===
 > and and or  = && ,||
-> new  - oo
+> new  - oop
 > type of
 
 /**
