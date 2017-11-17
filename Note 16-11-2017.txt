@@ -1,0 +1,583 @@
+/**************************************************************/
+Object Oriented Programming and implementation:
+..............................................
+>classes
+javascript is class free oopl-no classes like c++,java,c#
+javascript uses two pattern to create object
+>constructor pattern
+ >class based.
+    uses function to declare class - ES 5 pattern
+    es 6 uses "class" syntax to declare classes
+    but classes only source code level but underneeth every class
+    just function.
+/**
+ * oo
+ */
+//How to declare class - es 5
+/**
+ * coding standard to declare class
+ * class name must be noun
+ * class name must start uppercase
+ * new is operator which is used to create object
+ * "Object" is just memory allocated in the heap
+ *  Employee emp=new Employee(); - java or C#
+ * var/let/const emp=new Employee() - javascript
+ *  object contains:
+ *   >data
+ *   >behaviour
+ *   >identity
+   data,behaviour,identity are called instance variables,methods
+   How do i declare instance variables and methods?
+   this.id=100;
+   How do i access instance variables and methods?
+    let emp=new Employee();
+      using reference variable "emp"
+      emp.id - read
+   Data(instance variable) initalization:
+   1.hardcoded way
+   2.after object creation
+      using reference variables
+      let emp = new Employee();
+     //after object creation
+      emp.name = 'Ram'
+   3.during object creation - Constructor overloading
+Hierarchy:
+    Object relationship
+    >HAS-A -  Angular uses has-a nearly 99%
+    >IS-A  - Inheritance
+
+Inheritance:
+ >Javascript uses Object inheritance rather than class inheritance.
+   Inheritance is done in runtime only.
+   Object inherits other object objects
+   Inheritance is done through special "instance variable" which is
+   in built called "__proto__"
+   __proto__ : ParentObject
+   By default every object has parent object- "ProtoType",The ProtoType
+   object inheritance "Object"
+   Employee---->ProtoType--->Object
+   This is structure same for es5 and es6
+   Person
+   Employee--->Person
+   emp.__proto__ = new Person(); //es 5
+   Employee--->Person--->Prototype---Object
+
+   class Employee extends Person{
+
+   }
+
+ */
+//Address class
+function Address(doorno = '1', street = 'defaultStreet', city = 'defaultCity', state = 'defaultState') {
+    //declare address instance variables
+    this.doorno = doorno;
+    this.street = street;
+    this.city = city;
+    this.state = state;
+    /**
+     * __proto__ : object
+     */
+}
+
+function Employee(id = 1, name = 'defaultName', address = new Address()) {
+    //instance variables
+    this.id = id // 1;
+    this.name = name; // 'Subramanian';
+    //has-a
+    this.address = address;
+    //instance methods
+    this.calculateSalary = function () {
+        return 1000;
+    };
+}
+//function calling
+let address = new Address();
+address.city = 'Mumbai';
+let emp = new Employee(1, 'subramanian', address);
+//let emp = new Employee();
+//after object creation
+//emp.name = 'Ram'
+//reading data
+console.log(`Employee Id ${emp.id}`);
+console.log(`Employee Name ${emp.name}`);
+console.log(`Employee city ${emp.address.city}`);
+console.log(`Employee salary ${emp.calculateSalary()}`);
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * ES 6 classes
+ * In es 6 we have class keyword
+ * instance variables ,methods can be declared in two places
+ * >inside class directly
+ *      we need not use this keyword
+ * >inside a special function called "constructor"
+ *
+ *
+ *
+ */
+class CustomerAddress {
+    constructor(doorno = '1', street = 'defaultStreet', city = 'defaultCity', state = 'defaultState') {
+        //declare address instance variables
+        this.doorno = doorno;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+    }
+}
+class Customer {
+    //id;
+    constructor(id = 1, name = 'defaultName', address = new CustomerAddress()) {
+        //instance variables
+        this.id = id //10;
+        this.name = name; // 'Subramanian'
+        //has-a
+        this.address = address;
+    }
+    //instance methods
+    calculateGST() {
+        return 100;
+    }
+}
+//object creation
+let custAddr = new CustomerAddress();
+custAddr.city = 'Delhi';
+let customer = new Customer(1, 'ram', custAddr);
+//after object creation
+customer.name = 'ram'
+//reading data
+console.log(`Customer Id ${customer.id}`);
+console.log(`Name Id ${customer.name}`);
+console.log(`Customer City ${customer.address.city}`);
+
+console.log(`GST ${customer.calculateGST()}`);
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//inheritance and polymorphim(overriding)
+function Animal() {
+    this.name;
+    this.eat = function () {
+        return 'animal eats';
+    }
+}
+
+function Cat() {
+    this.id = 1;
+    //override the eat
+    this.eat = function () {
+        return 'Cat eats milk!';
+    }
+}
+let cat = new Cat();
+//explcit inheritance
+cat.__proto__ = new Animal();
+console.log(cat);
+cat.id = 100;
+cat.name = 'Sweety';
+console.log(`${cat.id} ${cat.name}`);
+console.log(cat.eat());
+//es 6
+class Bird {
+
+    constructor() {
+        this.family = 'flying Bird'
+        console.log('Bird constructor runs!');
+    }
+    fly() {
+        return 'Bird flies!'
+    }
+}
+class Crow extends Bird {
+    constructor() {
+        super();
+        this.name = 'myCrow';
+    }
+    //override
+    fly() {
+        //access parent class method
+        console.log(super.fly());
+        return 'Crow flies!';
+    }
+}
+let crow = new Crow();
+console.log(crow);
+crow.family = 'flying and jumping bird'
+console.log(`${crow.name} ${crow.family}`);
+console.log(crow.fly());
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//ES 6 brought new syntax called static.
+/**
+ * static variables or methods can be accessed without creating
+ * object using class Name.
+ */
+class Messages {
+    static SUCCESS = 'Success';
+    static doStuff() {
+        return 'Do Stuff!';
+    }
+}
+console.log(Messages.SUCCESS);
+console.log(Messages.doStuff());
+///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//Encapsulation: Scope
+/**
+ * 1.Global Scope
+ *   >javascript has scope called global scope.
+ *    any thing(variable,function,class) inside .js file directly
+ *  becomes global.
+ *   any thing you declare inside <script> tag 
+ * 2.local scope /private scope
+ *    anything you declare inside function
+ * 3.public or object scope
+ *     variable/method declared inside class using this keyword
+ *  public variables/methods can be accessed by object reference.
+ * 4.block scope
+ *   variable is declared inside block -  if
+ *   if(){
+ *     var x=100;
+ *  }
+ */
+function sayHello() {
+    //local scope
+    var name = 'subramanian';
+}
+
+function Product() {
+    //private
+    let price = 1000;
+    //methods
+    this.getPrice = function () {
+        return price;
+    }
+}
+sayHello();
+//console.log(name);//not accessible
+let p = new Product();
+console.log(p.price);
+console.log(p.getPrice());
+//es 6 private
+let price = 9000;
+class Item {
+    //private
+   // let price = 1000; - not allowed
+    //methods
+    getPrice = function () {
+        return price;
+    }
+}
+//block scope
+function sayHello(name) {
+    if (name) {
+        //var message = `Hello ${name}`;
+        let message = `Hello ${name}`;
+    }
+    return message;
+}
+console.log(sayHello('Ram'));
+console.log(sayHello());
+/**
+ * javascript compilation pattern:
+ * .java - javac - .class
+ * .css  - csc - .obj/exe
+ * .js -  javascript compiler(lexical parser) ---> ?
+ *
+ * Source code(you have written)
+ *function sayHello(name) {
+    if (name) {
+        var message = `Hello ${name}`;
+        //let message = `Hello ${name}`;
+    }
+    return message;
+}     |
+    parser converts the code into another code
+ * function sayHello(name) {
+ * var message;
+    if (name) {
+       message= `Hello ${name}`;
+       
+    }
+    return message;
+}
+ The process of moving code from block level to function level
+  is called "Hoisting"
+ *
+ */
+>Object literal Pattern
+/**
+ * Literal pattern
+ * No classes,no new keyword
+ * objects are created on fly.
+ * objects uses key-value pattern -interally object is just map data structure
+ * Data initalization:
+ * >hardcoded way
+ * >after object creation
+ *
+ *Object Relation:
+ HAS-A
+ IS-A: __proto__
+  by default the parent is not ProtoType but "Object itself"
+
+  Use Case:
+  >For Representing Data/Model in MVC
+  Literal Pattern only for Data.
+ *
+ */
+let Person = {
+    name:'Subramanian'
+}
+let customer = {
+    //instance variables and methods
+    id: 1,
+    //has-a
+    address: {
+        street: '10th street',
+        city: 'Chennai'
+    },
+
+    calculateGST: () => 100
+};
+//customer.name = 'Ram';
+customer.__proto__ = Person;
+console.log(customer);
+console.log(customer.id);
+console.log(customer.name);
+console.log(customer.address.city);
+console.log(customer.calculateGST());
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Modularity:
+Customer  Order   Main
+  |        |        |
+Order    Product   Customer
+Javascript linking:
+
+<script src="customer.js"></script>
+<script src="product.js"></script>
+<script src="order.js"></script>
+<script src="main.js"></script>
+
+Loader Design Pattern:
+>AMD -Ayn Module Definition
+>CommonJS - Improved Version of AMD
+     ---Loader lib - require.js
+>ES 6 Module Design Pattern =  Best practices of AMD + CommonJS
+
+ES 6 Module Design pattern:
+>How to link files?
+>How to share code(variables,functions,classes) between files?
+
+ES 6 brought new keywords:
+>import,export
+>import for linking
+>export,export default for sharing
+
+order.js
+export let company='Google'
+
+customer.js  
+import {company} from 'order' //order.js
+
+console.log(company)
+
+mylib.js
+/**
+ * 
+ */
+//sharing variable
+export let name = 'Subramanian';
+//sharing function
+export let sayHello = () => 'Hello';
+//sharing class
+export class Greeter {
+    constructor() {
+        console.log('Greeter is called!');
+    }
+}
+export default class Welcome{
+    constructor() {
+        console.log('Welcome')
+    }
+}
+/* export default class Hello{
+    constructor() {
+        console.log('Welcome')
+    }
+} */
+index.js
+/**
+ * export and import
+ */
+import Welcome,{ name,sayHello,Greeter } from './mylib';
+
+console.log(name);
+console.log(sayHello());
+let greeter = new Greeter();
+let welcome = new Welcome();
+/**************************************************************
+
+Data Structure:
+>Array,Set,Map,Symbol
+
+Array:
+/**
+ * Array
+ * Array itself is Object- One of the built in object
+ * Array can accept any literal
+ * Array has length property
+ * Array is 0th index based.
+ *How to create Array Object?
+  >Constructor pattern - Not in use
+  >Literal pattern - Used mostly
+ */
+//Constructor pattern
+/* let nameList = new Array('Subramanian', 'Ram', 'Geetha', 'Divya Sri');
+//iterate
+for (let i = 0; i < nameList.length; i++) {
+    console.log(nameList[i]);
+} */
+//Literal pattern
+//string array
+let nameList = ['Subramanian', 'Ram', 'Geetha', 'Divya Sri'];
+//iterate
+for (let i = 0; i < nameList.length; i++) {
+    console.log(nameList[i]);
+}
+//number array
+let scores = [23, 56, 90, 89, 19, 67];
+for (let i = 0; i < scores.length; i++) {
+    console.log(scores[i]);
+}
+//object array
+let customers = [{
+    id: 1,
+    name: 'Subramanian',
+    orders: [{
+        orderId: 1,
+        invoice: 12000
+    }]
+}, {
+    id: 2,
+    name: 'Ram',
+    orders: [{
+        orderId: 22,
+        invoice: 14000
+    }]
+}, {
+    id: 3,
+    name: 'Divya Sri',
+    orders: [{
+        orderId: 566,
+        invoice: 18000
+    }]
+}, {
+    id: 4,
+    name: 'Srisha',
+    orders: [{
+        orderId: 45,
+        invoice: 21000
+    }]
+}, {
+    id: 5,
+    name: 'Geetha',
+    orders: [{
+        orderId: 677,
+        invoice: 18700
+    }]
+}];
+/* for (let i = 0; i < customers.length; i++) {
+    let customer = customers[i];
+    console.log(`${customer.id} ${customer.name}`);
+} */
+/* customers.forEach(function (customer) {
+    console.log(`${customer.id} ${customer.name}`);
+}) */
+customers.forEach(customer => {
+    console.log(`${customer.id} ${customer.name}`);
+    //let orders = customer.orders;
+    customer.orders.forEach(order => console.log(`${order.orderId} ${order.invoice}`));
+});
+>>>>>>>>>>>>>>>>>>>
+
+
+
+What is TypeScript?
+>Typescript is super set of javascript.
+>Typescript scales javascript development.
+>Typescript brings type system in javascript
+>Typescript is only for development purpose not for production(running).
+>Typescript inspired many type related features from java,C# family of programming language.
+>Typescript is microsoft open source project,started in 2012.
+>Using type script you can build real oo systems in javascript.
+
+Why Typescript?
+   "Simple and Clean ,Object oriented Javascript"
+
+Getting Started Typescript.
+
+>install node
+>install typescript
+  >typescript brings compiler,tools,libs etc.....
+>installing typescript.
+>npm install typescript -g
+
+Type script brings command called "tsc" - compiler/Transpiler
+
+How to write typescript?
+filename.ts
+>tsc filename.ts
+  >filename.js ---Test this js on browser
+
+  Development ----->Typescript
+
+  Running ---------->js,html,webserver
+
+>npm install lite-server -g
+
+//////////////////////////////////////////////////
+index.html
+index.js
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+index.ts - HelloWorld
+>tsc index.ts ---->index.js
+
+>index.html
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Goal of Typescript:Adding data type
+
+Types of data Type:
+>Primtive types
+ number,string,boolean,void(undefined)
+>Reference types
+  Any Object type,Interface type,Enum
+
+Syntax:
+int x=10; //c style
+x="test"; compile time error
+let c:number =100;------>var c=100
+c="test"; compile time error
+
+var c:number;
+c=100; 
+c=true
+
+>npm uninstall typescript -g
+>npm update -g typescript
+>npm init
+
+>typescript compiler options:
+Compiler configuration file:
+
+tsconfig.json
+  This is file contains information about compiler options.
+>tsc --init
+>tsconfig.json
+
+/**
+ * Basic data types
+ */
+function testVariable() {
+    let name: string = 'Subramanian';
+   // name = 100;
+    let salary: number = 1000;
+    salary = 555;
+    let isWorking: boolean = false;
+    console.log(`${name} ${salary} ${isWorking}`);
+}
+testVariable();
