@@ -1,0 +1,1035 @@
+What is TypeScript?
+>Typescript is super set of javascript.
+>Typescript scales javascript development.
+>Typescript brings type system in javascript
+>Typescript is only for development purpose not for production(running).
+>Typescript inspired many type related features from java,C# family of programming language.
+>Typescript is microsoft open source project,started in 2012.
+>Using type script you can build real oo systems in javascript.
+
+Why Typescript?
+   "Simple and Clean ,Object oriented Javascript"
+
+Getting Started Typescript.
+
+>install node
+>install typescript
+  >typescript brings compiler,tools,libs etc.....
+>installing typescript.
+>npm install typescript -g
+
+Type script brings command called "tsc" - compiler/Transpiler
+
+How to write typescript?
+filename.ts
+>tsc filename.ts
+  >filename.js ---Test this js on browser
+
+  Development ----->Typescript
+
+  Running ---------->js,html,webserver
+
+>npm install lite-server -g
+
+//////////////////////////////////////////////////
+index.html
+index.js
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+index.ts - HelloWorld
+>tsc index.ts ---->index.js
+
+>index.html
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Goal of Typescript:Adding data type
+
+Types of data Type:
+>Primtive types
+ number,string,boolean,void(undefined)
+>Reference types
+  Any Object type,Interface type,Enum
+
+Syntax:
+int x=10; //c style
+x="test"; compile time error
+let c:number =100;------>var c=100
+c="test"; compile time error
+
+var c:number;
+c=100; 
+c=true
+
+>npm uninstall typescript -g
+>npm update -g typescript
+>npm init
+
+>typescript compiler options:
+Compiler configuration file:
+
+tsconfig.json
+  This is file contains information about compiler options.
+>tsc --init
+>tsconfig.json
+
+/**
+ * Basic data types
+ */
+function testVariable() {
+    let name: string = 'Subramanian';
+   // name = 100;
+    let salary: number = 1000;
+    salary = 555;
+    let isWorking: boolean = false;
+    console.log(`${name} ${salary} ${isWorking}`);
+}
+testVariable();
+/*
+Object types:
+
+class Employee{
+
+}
+
+let employee:Employee = new Employee();
+
+literal:
+let customer ={
+    id:1,
+    name:'subramanian'
+}
+literal object type rules:
+1.property of the type class must match in the literal object
+property declaration
+
+class Customer {
+    id: number;
+    name: string;
+    address: string;
+}
+let customer:Customer ={
+    id:1,
+    name:'subramanian'
+}
+The above code throws error - address is missing
+
+What if i dont want to check all variables?
+
+optional property - ?
+class Customer {
+    id: number;
+    name: string;
+    address?: string;
+}
+let customer: Customer = {
+        id: 1,
+        name: 'subramanian'
+}
+Array:
+
+How do you create?
+1.constructor pattern
+let mylist = new Array(1,2,3);
+2.literal pattern
+let mylist = [1,2,3]
+
+In js:
+let customers = [
+    {id:1,name:'test'}
+]
+in Type script:
+1.pattern 1
+let list: number[] = [1, 2, 3];
+2.pattern 2
+let list:Array<number> - array of numbers
+<number> - Generics
+Array<Customer>
+Array<Employee>
+Array<Order>
+
+I want to mix types in array - Tuples
+Tuple:
+// Declare a tuple type
+let x: [string, number];
+// Initialize it
+x = ["hello", 10]; // OK
+// Initialize it incorrectly
+x = [10, "hello"]; // Error
+////////////////////////////////////////////////////////////////
+
+Javascript style: any type
+>let x =10;
+x="test"
+x=true
+>let x:any
+
+///////////////////////////////////////////////////////////////
+Functions:
+
+1.function generally looks the parameter by default.
+
+function sayHello(name:string) {
+    console.log(`${name}`);
+}
+sayHello('Subramanian');
+//sayHello(1); error
+//1.function generally looks the parameter by default. 
+/**
+ * function default parameters can be defined in two ways
+ * >age?:number
+ *   In this pattern the compiler omit this arg if you dont supply
+ *   but age would be undefined
+ * >age:number=1
+ *   This is es6 default parameter style, which makes optional and
+ *   also will have defualt value
+ */
+
+
+function sayHello(name: string, age: number = 1) {
+    console.log(`${name} ${age}`);
+}
+sayHello('Subramanian');
+//sayHello(1); //error
+//sayHello(); //error because undefined
+//Return type
+
+function sayHai(name: string): string {
+    return name;
+    //return 1111;//error
+}
+console.log(sayHai('Subramanian'));
+
+//void is undefined
+function sayGreet(): void {
+    console.log('SayGreet')
+}
+sayGreet();
+//passing objects and return them
+class Employee {
+    id: number;
+    name?: string;
+}
+function printEmployee(employee: Employee): Employee {
+    //console.log(`id ${employee.id}`);
+    return employee;
+}
+console.log(printEmployee({ id: 1 }));
+
+//return array
+class Customer {
+    id: number;
+    name: string;
+    address?: string;
+}
+function getCustomers(): Array<Customer> {
+    let customerList: Array<Customer> = [
+        { id: 1, name: 'admin' },
+        { id: 2, name: 'guest' },
+    ];
+    return customerList;
+}
+console.log(getCustomers());
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Interfaces: Similar as Java and C#:
+
+Interface is acting as type.
+Interface is for polymorphism-Overriding
+
+Interface as Type:
+
+interface Employee {
+    id: number;
+    name: string;
+    address?: string;
+}
+function testInterfaceType() {
+    let employee: Employee = {
+        id: 1,
+        name: 'Subramanian',
+        address: 'Chennai'
+    };
+    console.log(employee);
+}
+testInterfaceType();
+
+Runtime polymorphism and Typescript interfaces:
+...............................................
+We can enforce polymorphic behavior in type script interfaces
+interface can have methods.
+interfaces can be implemented with classes using "implements" keyword.
+interface methods must be overriden
+
+/**
+ * Interfaces
+ */
+interface Employee {
+    id: number;
+    name: string;
+    address?: string;
+}
+function testInterfaceType() {
+    let employee: Employee = {
+        id: 1,
+        name: 'Subramanian',
+        address: 'Chennai'
+    };
+    console.log(employee);
+}
+testInterfaceType();
+///////////Interface and polymorphism
+interface Runnable {
+    run(): void;
+}
+interface Flyable {
+    fly(): void;
+}
+class Flight implements Runnable, Flyable {
+    //override run method
+    run(): void {
+        console.log('Running!')
+    }
+    fly(): void {
+        console.log('Flight Flying!');
+    }
+}
+class Bird implements Flyable {
+    fly(): void {
+        console.log('Bird Flying!');
+    }
+}
+function createFlight() {
+    let flight: Flight = new Flight();
+    flight.run();
+    flight.fly();
+}
+createFlight();
+function createBird() {
+    let bird: Bird = new Bird();
+    bird.fly();
+}
+createBird();
+function createFlightAndBird() {
+    console.log('Program to Super Type')
+    let flying: Flyable = null;
+    flying = new Flight();
+    flying.fly();
+    flying = new Bird();
+    flying.fly();
+}
+createFlightAndBird();
+/***************************************************************/
+Typescript and Encapsulation:
+Typescript introduces new encapsulation modifers
+>private,public,protected
+
+private/public  variables declaration:
+......................................
+1.inside class
+class Hero{
+      private score:number; // private 
+}
+2.inside constructor argument
+class Hero{
+     constructor(private id:number,public name:string){}
+}
+/**
+ * Encapsulation Modifiers
+ *>private,public ,protected
+   >private:
+      instance variables,methods cant be accessed out
+      side class
+  >public :
+      instance variables,methods can be accessed outside
+      class
+      by default all variables and methods are public
+     public keyword is implicit
+
+  >protected:
+     instance variables,methods can be accessed inside child
+    classes.
+ */
+
+class Hero {
+    //pattern 1
+    //private id: number;
+    //public name: string;
+    //pattern 2 
+    constructor(private id: number, public name?: string) {
+
+    }
+    getId() {
+        return this.id;
+    }
+}
+function createHero() {
+    let hero = new Hero(12);
+    //hero.id = 1; //private variable not accessible
+    //console.log(hero.id);
+    console.log(hero.getId());
+}
+createHero();
+
+class Person {
+    protected name: string;
+    constructor(name: string) { this.name = name; }
+}
+class Employee extends Person {
+    private department: string;
+    constructor(name: string, department: string) {
+        super(name);
+        this.department = department;
+    }
+    public getElevatorPitch() {
+        return `Hello, my name is ${this.name} 
+        and I work in ${this.department}.`;
+    }
+}
+function createInheritance() {
+    let emp = new Employee('subramanian', 'training');
+    console.log(emp.getElevatorPitch());
+}
+createInheritance();
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Abstract classes:
+.................
+/**
+ * Abstract classes
+ *
+ */
+abstract class Animal {
+    abstract makeSound(): void;
+    move(): void {
+        console.log("roaming the earth...");
+    }
+}
+class Dog extends Animal{
+    //override makeSound
+    makeSound(): void{
+        console.log('Dog barks....')
+    }
+}
+function createAnimal() {
+    let animal: Animal = null;
+    animal = new Dog();
+    animal.makeSound();
+    animal.move();
+}
+createAnimal();
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+/**
+ * Generics -Custom
+ *Generics can be applied to function-generic function
+  Generics can be applied to classes -Generic classes
+ */
+//Generics: //T -type - Any type,once fixed cant be chanaged
+function identity<T>(arg: T): T {
+    return arg;
+}
+function testGenerics() {
+    let output;
+    output = identity<string>("hello");//identity<string>(222)
+    console.log(typeof output);
+    output = identity<number>(1222);
+    console.log(typeof output);
+}
+testGenerics();
+/////////////////////////////////////////////////////////////
+//Generic classes-In Angular we use in ajax 
+class GenericNumber<T> {
+    zeroValue: T;
+    add: (x: T, y: T) => T;
+}
+
+function testGenericClass() {
+    let myGenericNumber = new GenericNumber<number>();
+    myGenericNumber.zeroValue = 0;
+    myGenericNumber.add = function (x, y) { return x + y; };
+}
+testGenericClass();
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Modules:
+-------
+ES 6 modules would be same as Typescript Modules-export,import
+
+Decorators(Annotation):
+----------------------
+Program about Program - Meta Programming-Annotation
+1.....10
+ 5 + 5
+
+Decorators syntax:
+@nameofDecorator()
+
+How to implement annotation in java?
+Annotaion is just interface
+interface MyAnnotation{
+
+}
+How to implement Decorator in javascript/typescript?
+Decorator in javascript/typescript is just function
+
+function myDecorator(){
+
+}
+Decorators provide meta programming.
+Decorators provide boiler plate code 
+
+Decorators are still in experimental stage.
+Decorators are ES 7 proposal feature.Typescript already adopted
+this feature.
+What is decorator in ES 7/Ts?
+Decorator are just functions.
+Decorators are identified by "@" symbol
+@Logger(),@Auth() @Component(),@Directive(),@Injectable.
+  
+Decorators can be applied on variable,class,method
+
+@Auth()let name;
+
+or
+@Auth()
+let name;
+
+if you declare on variable that decorator is called "Variable
+Decorator"
+
+
+@Auth()
+function login(){
+
+}
+if you declare on function that decorator is called "Function
+Decorator"
+
+@Auth()
+class User{
+
+}
+if you declare on variable that decorator is called "Class
+Decorator".
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>End TypeScript>>>>>>>>>>>>>>>>>>>>>>>
+
+
+>>>>>>>>>>>>>>>>>Angular>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+What is Angular?
+ Angular is javascript framework to build client side Dynamic web Applications.
+
+Web Evolution:
+..............
+In CERN
+In 1989  Web was created to distribute information over internet.
+Web Information systems uses model called "documents".
+SGML - The meta programming language to create Documents.
+Line Mode web Browser - CommandLine
+
+1991 GUI - Nets Cap navigator - Netscap communications
+
+
+1989 SUN - Green -Java
+      |
+    NetSCAP
+1992-1993 - Introduce web +java(Applet) = Web dynamic web.
+
+1995.Fall of java............................
+
+1996.....Dynamic Content Generation Technology:
+   Instead of introducing inside html.
+How to build html onfly by connecting data sources(mainframes,RDBMS)
+
+CGI CommonGateway interface - c,perl
+J2EE - Servlet
+1966-1997 -ASP -Vb based 
+1997 -PHP
+1996----------------------|2005----Mobility--2005--Smart Phones--
+Andorid----->
+RESTFull WebServices---->Data or not html(document)---->Javascript
+
+>Static webApplication
+>Dynamic WebApplication 
+>Resource based/Data Driven WebApplication -WebService
+>Single Page WebApplication(SPA) - javascript,HTML5,CSS3 -client side(browser)
+
+Client Side WebApplication -SPA:
+
+1.Backbone
+2.JQuery
+3.Extjs
+..................
+
+4.Angular JS - 2008 from google team ,<h1><%=name><h1>
+ 1.Declarative programming
+ 2.MVC Design pattern
+ 3.Fast , Reliable Develery....
+ ..........................................>
+
+Face book introduced a lib called "React.js"
+
+>In 2015 - ES 6 were standardised.
+
+Google started a project called "Angular2"..............
+
+Angular 2  /4: - Angular:
+.......................
+1.MVC framework to build html pages
+2.Component driven Model
+3.Angular based on ES 6 and Typescript
+4.Angular has integrated "Reactive Programming"
+5.Angular is superfast than angularjs
+6.Angular is not two data binding framework at first place.
+7.Angular uses data management called "Single Data Direction Flow"
+8.Angular is "truly Object Oriented".Every thing object
+9.Angular uses Advanced concepts like "security,internationazation,ariea".
+
+Angular Programming Building Blocks:
+...................................
+1.Module
+2.Component
+3.Service
+4.Directive
+5.Pipes
+6.Templates
+7.Meta Objects
+8.Data binding and techniques
+9.Routing
+10.HTTP programming
+11.Animations
+12.Unit Testing.
+etc..........
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ASP - to create html page-CLR
+JSP - to create html page-Jvm
+php - to create html page-Zend
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Browser is Engine:
+Angular - to create html page - Browser--AngularEngine
+React.js - to create html page--Browser-ReactEngine
+Backbone.js -  to create html page -Browser-BackboneEngine
+
+If you create HTML Pages dynamically what do you need?
+
+>html tags
+  <body>
+    <h1>Hello<=name></h1>
+  </body>
+>data
+
+Source code
+hello.aspx - hello.jsp,hello.php
+ <body>
+    <h1>Hello<=name></h1>
+  </body>
+ |
+ Compilation
+ |
+ compiled Code
+  |
+  executed by engine
+  |
+  HTML - OUTPUT - View
+
+Client Side - Browser
+Angular
+<html>
+   <h1>Hello{{name}}</h1>
+</html>
+|
+compilation
+|
+compiled code
+|
+HTML - output -View
+
+Dynamic html creation is possible in browser side using javascript only.The programming model called "DOM Programming".
+
+Create DOM element using pure javascripT-Dom Programming:
+........................................................
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    
+    <script>
+        function addElement() {
+            
+            var heading = document.createElement("h1");
+            var newContent = document.createTextNode("Hi there and greetings!");
+            heading.appendChild(newContent); 
+            document.body.appendChild(heading);
+            
+        }
+        addElement();
+    </script>
+</body>
+
+</html>
+
+Creating DOM element using Angular:
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  template: `<h1>Hi there and greetings!</h1>`
+})
+export class AppComponent {
+  title = 'app';
+}
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Setup Structure:
+>src
+  |
+  app
+    --->Sources
+      1.ts ,html,css
+  assets
+     -->static assets - data files,images
+ environments
+       -->Settings for webpack
+    --Devlopment env
+    -->production env
+ --->index.html
+       Entry file which is loaded first
+      loads Angular Application
+------>main.ts,polfils.ts,styles.css,test.ts
+------>tsconfig.app.json,tsconfig.spec.json
+------>typings.d.ts
+           Type definitions file for angular
+           Ts config file.
+////////////////////////////////////////////
+angular-cli.json
+      This file where we can our custom configurations.
+Project Configuration:
+
+name:The name of the project.
+Application settings:
+
+"root": "src" - app source root dir
+ "outDir": "dist", -Compiled files(.js)
+ "assets": [
+        "assets",
+        "favicon.ico"
+ ],
+"index": "index.html" - staring page configuration
+"main": "main.ts",  -main entry file for angular apps.
+ "prefix": "app" - Angular starts with app name
+
+//Global style configuration
+ "styles": [
+        "styles.css"
+        "node_modules/dist/bootstrap/bootstrap.min.css"
+  ]
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Angular lib:
+
+Libs are distributed and included in project:
+
+Old patterns:
+>go and download libs from lib's website as zip file or .js file
+>include in our project workspace
+>include inside html page using <script>
+    <script src="lib/jquery.min.js"></script>
+>CDN's
+  Instead of downloading libs we can use lib's cloud servers
+  <script src="https://api.lib.google.com/jquery/jquery.min.js">
+  </script>
+>Node based distribution: It is latested standard
+>npm install jquery.
+>npm install angular
+>npm install react
+
+Where files(libs) will be installed?
+in project workspace the folder called "node_modules"
+
+I want to know what are files i have installed?-package.json
+
+Angular lib overview:
+.....................
+Angular Folder/Lib strcture:
+............................
+@angular-root folder
+
+@angular
+   core
+   common
+   forms
+   http
+   router
+   platform-browser
+   platform-browser-dynamic
+   animations
+
+import {Component} from '@angular/core'
+import {} from '@angular/http'
+import {} from '@angular/common'
+import {} from '@angular/animations'
+import {} from '@angular/forms'
+
+@angular - root folder
+   /core -subfolder
+       ---->Collection of files
+Each file is ts file contains
+    functions,variables,classes -Exported
+  exported using -  export,export default
+
+  eg:
+import {Component} from '@angular/core'
+
+Note: when you import,  './' or './billing/Billing.component'
+                                  This is user defined path
+                        'billing/Billing.component'
+                                 this is node path 'node_modules'
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Angular Application:
+Application is collection of objects and static assets(css,html,images).
+Angular creates HTML elements and inserts into one container element called root element. - 
+<app-root>
+
+</app-root>
+
+Application is collection of Objects:
+
+Object types:
+1.Module
+ >Container Object.
+ >which contains other objects
+Imagine Module is like folder.
+Folder collection of files and sub-folders
+
+In Angular module is just Object.
+Which contains other Objects
+>Every Angular Application must have atleast one module called
+ RootModule or ContainerModule.
+>You can create sub-modules as well.
+
+>Root module is represented in a file called "app.module.ts"
+
+
+2.Component
+
+3.Service
+4.Directive
+5.Pipe
+etc.....
+
+1. Component
+
+It is object which represents view.
+Component represents dynamichtml.
+
+Component Creation:
+
+As we discussed Component is Object.
+If you want to create Object what you need?
+Class
+Steps:
+>you declare class
+/**
+ * Component Creation
+ * Steps:
+ * >declare class
+ *> import Component decorator function from @angular/core
+  >Decorate/Annoate the class
+
+  Component decorator takes parameter
+  parameter is just literal object - {}
+  Literal object is called configuration object
+    >component Configuration object
+    >Component Configuration object is built in
+ Configuration object contains lot property:
+
+  changeDetection?: ChangeDetectionStrategy
+  viewProviders?: Provider[]
+  moduleId?: string
+  templateUrl?: string
+  template?: string
+  styleUrls?: string[]
+  styles?: string[]
+  animations?: any[]
+  encapsulation?: ViewEncapsulation
+  interpolation?: [string, string]
+  entryComponents?: Array<Type<any>|any[]>
+  preserveWhitespaces?: boolean
+  // inherited from core/Directive
+  selector?: string
+  inputs?: string[]
+  outputs?: string[]
+  host?: {[key: string]: string}
+  providers?: Provider[]
+  exportAs?: string
+  queries?: {[key: string]: any}
+
+selector:name of the tag
+  nameof the tage must be dash-case notation.
+  name of the tag starts generally app-element
+  app can be changed - refer angular-cli.json config file
+  selector will become html tag name, we can see this in
+  final output -<app-root>
+
+template:
+   Which contains static html + place holder for data
+   Template will be converted as final html output(view)
+   Template only for development/at source code only
+   Template will be compiled by angular compiler,converts
+   final html.
+   template values are strings:
+    can be represented '' or "" or ``
+    `` can be used for multi line template.
+templateUrl:
+   Which contains static html + place holder for data
+   which is used to create template in a separate file
+   and link inside your program
+   templateUrl:'app.html'
+   
+Common mistakes and errors and how to fix them?
+
+Error:template Parse error
+if you encounter that your screen blank, meaning that you have
+template parse error.
+if any error in html like closing tag missing, or any unwanted
+characters,missing binding syntaxs.
+  
+ */
+import { Component } from '@angular/core';
+
+
+@Component({
+  selector: 'app-root',
+  templateUrl: 'app.component.html'
+})
+export class AppComponent {
+
+}
+Templates:
+
+Templates are just source code containing static html elements and
+place holders
+
+Place holders will replace data:
+................................
+In Angular data is called "Model".
+Model:
+
+>Model can be any type(primitive,object,array)
+>Models are represented inside controller/Service layer
+>Models can be transfered from Controller to View and vice-versa
+ (View to Model)
+>Attaching Model inside view(template) called "Data Binding"
+
+Types of Data Biding:
+.......................
+All bindings are represented by symbols
+
+1.Interpolation - {{}}
+2.Property binding - []
+3.Event Binding - ()
+4.TwoWay data Binding - [()]
+5.class Binding = []
+6.Attribute binding = []
+7.Style binding -[]
+
+1.Interpolation - {{}}
+  This binding helps to transfer data(model)
+  from Controller to View
+Where is Controller?
+  Every Component class is Controller.
+
+Code Refactoring:
+
+>Every file must have only one class
+
+/**
+ * Component Creation
+ * Steps:
+ * >declare class
+ *> import Component decorator function from @angular/core
+  >Decorate/Annoate the class
+
+  Component decorator takes parameter
+  parameter is just literal object - {}
+  Literal object is called configuration object
+    >component Configuration object
+    >Component Configuration object is built in
+ Configuration object contains lot property:
+
+  changeDetection?: ChangeDetectionStrategy
+  viewProviders?: Provider[]
+  moduleId?: string
+  templateUrl?: string
+  template?: string
+  styleUrls?: string[]
+  styles?: string[]
+  animations?: any[]
+  encapsulation?: ViewEncapsulation
+  interpolation?: [string, string]
+  entryComponents?: Array<Type<any>|any[]>
+  preserveWhitespaces?: boolean
+  // inherited from core/Directive
+  selector?: string
+  inputs?: string[]
+  outputs?: string[]
+  host?: {[key: string]: string}
+  providers?: Provider[]
+  exportAs?: string
+  queries?: {[key: string]: any}
+
+selector:name of the tag
+  nameof the tage must be dash-case notation.
+  name of the tag starts generally app-element
+  app can be changed - refer angular-cli.json config file
+  selector will become html tag name, we can see this in
+  final output -<app-root>
+
+template:
+   Which contains static html + place holder for data
+   Template will be converted as final html output(view)
+   Template only for development/at source code only
+   Template will be compiled by angular compiler,converts
+   final html.
+   template values are strings:
+    can be represented '' or "" or ``
+    `` can be used for multi line template.
+templateUrl:
+   Which contains static html + place holder for data
+   which is used to create template in a separate file
+   and link inside your program
+   templateUrl:'app.html'
+   
+Common mistakes and errors and how to fix them?
+
+Error:template Parse error
+if you encounter that your screen blank, meaning that you have
+template parse error.
+if any error in html like closing tag missing, or any unwanted
+characters,missing binding syntaxs.  
+ */
+import { Component } from '@angular/core';
+import { Hero } from './hero';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: 'app.component.html'
+})
+export class AppComponent {
+  // instance variables/ methods  
+  // instance variables are models of view  
+  title: string = 'Welcome to Angular Application';
+  // object
+  hero: Hero = {
+    id: 1,
+    name: 'Rubber Man'
+  };
+}
+
+
+
+
