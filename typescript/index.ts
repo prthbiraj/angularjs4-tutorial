@@ -247,7 +247,6 @@ function testUserGenericsClass(){
     obj.add = (x, y) => x+y;
     
 }
-
 testUserGenericsClass();
 
 
