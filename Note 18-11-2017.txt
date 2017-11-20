@@ -1,0 +1,736 @@
+How to create Object in Angular?
+
+>We are not creating objects in Angular.
+>Angular creates object,returns the reference of the object to the  Application.
+
+>IOC and Dependency Injection:
+
+Modules:
+Module is just object.
+Module is container object,which contains other objects such as component,module(submodule),service,directive,pipe......
+Every angular application must have one single container object
+called root.
+
+app.module.ts
+
+/**
+ * Module creation
+ * >Declare class
+ *>Decorate the class with decorator
+    >NGModule decorator is used to decorate the class,then it becomes
+     Module
+    >NgModule function takes parameter called configuration parameter
+     which is literal object
+Module configuration Object:
+  providers?: Provider[]
+  declarations?: Array<Type<any>|any[]>
+  imports?: Array<Type<any>|ModuleWithProviders|any[]>
+  exports?: Array<Type<any>|any[]>
+  entryComponents?: Array<Type<any>|any[]>
+  bootstrap?: Array<Type<any>|any[]>
+  schemas?: Array<SchemaMetadata|any[]>
+  id?: string
+
+Generally module configuration object properties(declarations,imports
+,providers)are input to "IOC Container"
+declarations:[AppComponent]
+imports:[]
+providers:[]
+For DI Injection(IOC) Objects can be classified like below
+Angular Object  Category:
+
+1.view objects:
+    Related to html display
+  Component,pipes,Directives
+View objects must be configured in "declarations" meta data
+
+2.Module and submodule objects:
+
+   Building containers objects
+   Module class decorated with @NgModule
+Module DI must be configured in "imports" meta data.
+
+3.Service layer Objects
+    Contains application logic and data
+    Service class decorated with @Injectable
+Service DI must be configured via "providers" meta data
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+bootstrap
+
+ */
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+
+@NgModule({
+  declarations: [AppComponent], // view objects
+  imports: [BrowserModule], // module objects
+  providers: [], // service objects
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+main.ts
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.log(err));
+
+
+Script files to be included:
+<script type="text/javascript" src="inline.bundle.js"></script>
+<script type="text/javascript"src="polyfills.bundle.js"></script>
+<script type="text/javascript" src="styles.bundle.js"></script>
+<script type="text/javascript" src="vendor.bundle.js"></script>
+<script type="text/javascript" src="main.bundle.js">
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+How to create multiple Components?
+Steps:
+>1
+app.hero.component.ts
+import { Component } from '@angular/core';
+import { Hero } from './hero';
+
+@Component({
+    selector: 'app-hero',
+    template: ` <div>
+                <h2>id :{{hero.id}}</h2>
+                <h2>name : {{hero.name}}</h2>
+             </div>`
+})
+export class HeroesComponent {
+    // object
+    hero: Hero = {
+        id: 1,
+        name: 'Rubber Man'
+    };
+}
+>2.DI
+app.module.ts
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { HeroesComponent } from './app.hero.component';
+
+@NgModule({
+  declarations: [HeroesComponent, AppComponent], // view objects
+  imports: [BrowserModule], // module objects
+  providers: [], // service objects
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+>Use Component in template
+app.component.html
+<div>
+  <h1>{{title}}</h1>
+  <app-hero></app-hero>
+</div>
+
+Note: In Angular dont create any objects manually.Assign to 
+Angular DI,Which takes care to create and link.
+
+Angular work flow:
+
+index.html--->main----->AppModule-----AppComponent--->Other Components
+ 
+main.ts
+ platformBrowserDynamic
+    It is function ,used to start window.onload
+If DOM ready, go and create AppModule Object,once ready go and start......
+
+index.html is entry to web app:
+
+index.html
+  <script src="main.js"> </script>
+                 |
+                app.module.js
+                    |
+                app.component.js
+                    |
+                    Render
+
+Libs inside html:
+...............
+<script type="text/javascript" src="inline.bundle.js"></script>
+   -inline scripts
+<script type="text/javascript" src="polyfills.bundle.js">
+   Wrapper features of old browsers
+</script><script type="text/javascript" src="styles.bundle.js">
+   Styles
+</script>
+<script type="text/javascript" src="vendor.bundle.js">
+ Angular libs
+</script>
+
+<script type="text/javascript" src="main.bundle.js"></script>
+ App Module
+//////////////////////////////////////////////////////////////////
+What if i want to create another and how to link in the document flow.
+
+Think in terms of html work flow:
+<div class="container">  --- parent
+   <div class="header"> -child
+   <div>
+   <div class="main">
+   <div>
+   <div class="footer">
+   <div>
+</div>
+container ----- AppComponent --- <app-root>
+
+<app-root> -  custom Element/user defined tag
+How browser understand other than in built html elements.
+This is new feature of HTML 5.
+According to html
+   1. You can add new html element and you teach browser how
+to render.
+   How do you teach your browser?
+        Javascript
+  2. You can custom attributes
+
+Custom Element rules:
+
+1.Custom elements must follow "dash-case" notation
+    <app-root> <e-learning> <app-customers>
+////////////////////////////////////////////////////////////////
+Component and custom elements:
+.............................
+Every component is object which has state and behavior.
+Associated with custom tag.
+
+Every Component must be identifed by "tagname",that is configured
+in component meta object via "selector"
+
+Coding standard:
+
+File names:
+should be meaningfull to domain.
+>app.component.ts
+>app.hero.component.ts
+ app.hero.component.html
+ app.hero.component.css
+ app.hero.service.ts
+ app.hero.directive.ts
+Class Names:
+>Should be meaningfull
+>Should be noun
+>HeroComponent,HeroService,HeroDirective,HeroPipe
+
+Model(Instance variables)and methods
+>Should be meaningfull
+>hero,orders,name,id,CustomerId
+>methodname should be verb,verb+Noun
+  >transfer,getEmployees(),getEmployeeById()
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+MVC design Pattern:
+
+M-model - data
+V - View - Component's Template
+C-Controller - Component
+
+Role of Controller
+>Controller only can talk to View
+>controller transfer data to View
+>Controller can receive data from the View
+>Controller should not have data reprsentation.
+Where should i represent data?
+>Service layer
+
+What is Service?
+Service in Angular just object,having data and its logic.
+
+Implementation:
+1.Service is just class.
+
+import { Injectable } from '@angular/core';
+import { Hero } from './hero';
+
+
+@Injectable()
+export class HeroService {
+    // object-data
+    private hero: Hero = {
+        id: 1,
+        name: 'Rubber Man'
+    };
+    // api to return Hero
+    getHero(): Hero {
+        return this.hero;
+    }
+}
+import { Component } from '@angular/core';
+import { HeroService } from './app.hero.service';
+
+@Component({
+    selector: 'app-hero',
+    template: ` <div>
+                <h2>id :{{hero.id}}</h2>
+                <h2>name : {{hero.name}}</h2>
+             </div>`,
+    providers: [HeroService]
+})
+export class HeroesComponent {
+    // Add Constructor to grab HeroService Object
+    /**
+     * The Object Reference must be accessible as a Constructor
+     * arg.
+     * The Object Reference can be private or public
+     */
+    // declare handle variable which is used by template to refer data
+    hero;
+    constructor(private heroService: HeroService) {
+        this.hero = heroService.getHero();
+    }
+}
+You have to inject The Object into Component.
+Types of Injection as IOC:
+1.Setter Injection
+   Angular does not support setter
+2.Constructor Injection
+   Angular supports only constructor .
+
+*.You have to add Constructor.
+*.You have to inject as constructor arg. That should be instance
+  variable.
+  export class HerosComponent {
+    // instance variable
+    constructor(private heroService: HeroService) {  }
+
+}
+Service DI:
+Where i do teach to create HeroService?
+1.component
+ providers:
+2.module
+ providers:
+
+Service types:
+
+You can classify services
+
+1.based on use
+
+ Where we are using service.
+Service may be used by only one component.
+   Local Service
+If you create/inject Service inside component meta object.
+
+Service may be used by many component.
+   Shared/Global Service
+If you create/inject Service inside App Module meta object.
+
+2.Based on Call /Return
+>Syn
+>Asyn
+
+>Syn programming:
+
+console.log('Hello') -1
+console.log('Hai!') -2
+doStuff()-3--------takes long time
+console.log('Welcome') -4 ---keeps on waiting
+
+>Asyn Programming
+
+console.log('Hello') -1 - Syn Api
+console.log('Hai!') -2 -Syn Api
+doStuff()-3--------takes long time - Asyn Api
+console.log('Welcome') -4 ---keeps on waiting
+
+
+Asyn Service
+  The Service should return data with delay.
+1.Using AJAX
+2.USING Timers
+
+While writing delayed operation -  you can wrap your code
+inside "Promise"
+"Promise is wrapper to any delayed exeuction,ensures that 
+operations never end in callback hell"
+
+Now Lets explore some delay-Using timer and ES 6 Promise Object
+Later we will explore Using ajax
+
+   // asyn -using timer and timer code wrapped inside promise
+    getHeroServiceSAsyn(): Promise<Hero> {
+        return new Promise(resolve => {
+            // Simulate server latency with 5 second delay
+            setTimeout(() => resolve(this.getHero()), 5000);
+        });
+    }
+}
+Coding Refactoring:
+Inside component Class?
+How to get Promise?
+>inside constructor
+>Inside life cycle methods
+ Angular provides life cycle methods,inwhich we can get data
+ >Recommended pattern
+Why not constructor?
+>constructor should be used only for getting reference(DI).
+
+How to add life cycle methods?
+Life cycle methods are inside interfaces.
+>OnInit -ngOnInit
+export class HeroesComponent implements onInit{
+
+ hero;
+    constructor(private heroService: HeroService) { }
+    ngOnInit() {
+        this.heroService.getHeroAsyn().then(hero => this.hero = hero);
+    }
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+How to add if,switch,for inside template?
+
+Directives:
+What is directive?
+ Directive is nothing but "custom tag" <app-root> <app-hero>
+
+Types of directives:
+>Template Directive
+  Template directive is directive assoicated with template.
+  Every Component is Template Directive.
+>Structural Directive
+  Directive which adds or removes or modifes existing rendered(element).
+  >
+   *ngIf
+   *ngSwitch
+   *ngFor -looping
+
+Syntax:
+  *ngIf="condition" -  condition - truthy or falsy
+*ngIf is used part of element
+<div *ngIf="condition">
+   <!--display if condition is true-->
+</div>
+
+*ngFor
+<!--layouts 
+ >Listview
+   <ul><li>
+ >GridView
+   <table><tr>
+ >CardView
+   <div>
+-->
+<div>
+  <ul>
+    <li *ngFor="let hero of heroes">
+      <span>{{hero.id}}</span>{{hero.name}}
+    </li>
+  </ul>
+</div>
+import { Component, OnInit } from '@angular/core';
+import { HeroService } from './app.hero.service';
+
+@Component({
+    selector: 'app-hero',
+    templateUrl: 'app.heroes.component.html'
+    //providers: [HeroService] //component level
+})
+export class HeroesComponent implements OnInit {
+    // Add Constructor to grab HeroService Object
+    /**
+     * The Object Reference must be accessible as a Constructor
+     * arg.
+     * The Object Reference can be private or public
+     */
+    // declare handle variable which is used by template to refer data
+    heroes;
+    constructor(private heroService: HeroService) { }
+    ngOnInit() {
+        // this.heroService.getHeroAsyn().then(hero => this.hero = hero);
+        this.heroService.getHeroes().then(heroes => this.heroes = heroes);
+    }
+}
+
+>Attribute Directive
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Component Styles:
+
+How to add css?
+
+>Component level
+  Css is added inside Component itself
+  >Inline css
+    >styles:[``]
+  >external css
+    >styleUrls:['app.heroes.component.css']
+>Global level
+  Global level styles are configured inside angular-cli.json file
+  "styles":[
+      "styles.css"
+  ]
+How to add third party css lib(bootStrap)?
+
+Steps:
+>install bootsrap
+>npm install bootstrap --save
+>open angular-cli.json file
+
+"styles":[
+    "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+    "styles.css"
+]
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Property Binding:
+<h1 class="myclass" style="color:red"> - Object
+Lets 
+class h1{
+    class="myclass";
+    style;
+    id;
+    .....
+}
+let h1node=new h1();
+h1node.class ='myclass'  node.addClass('myclass');
+h1node.style ='color:red' node.addStyle('color:'test')
+h1node.innerHtml ='Hello' node.html('hello')
+
+<h1 class="myclass" style="color:red">
+      |               |
+    attribute       attribute
+
+Property means custom attributes
+<app-header [title]="'Profile Manager'">
+             |           | property value(can be any type)
+          property  - User defined attributes are called props
+class HeaderComponent{
+    title=?;
+}
+how to assign property value to component's instance variable
+we have decorator - 
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Property Use cases
+1.Property can be passed to component directly
+  <app-header [title]="'Profile Manager'">
+2.Property's value can be passed from parent to child.
+  Parent owns data and child displays data.
+  This enables "Single Direction data flow" Model
+Master-Child RelationShip:
+.........................
+app.heroes.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { HeroService } from './app.hero.service';
+
+@Component({
+    selector: 'app-hero',
+    templateUrl: 'app.heroes.component.html',
+    styleUrls: ['app.heroes.component.css'],
+    //providers: [HeroService] //component level
+})
+export class HeroesComponent implements OnInit {
+    // Add Constructor to grab HeroService Object
+    /**
+     * The Object Reference must be accessible as a Constructor
+     * arg.
+     * The Object Reference can be private or public
+     */
+    // declare handle variable which is used by template to refer data
+    heroes;
+    constructor(private heroService: HeroService) { }
+    ngOnInit() {
+        // this.heroService.getHeroAsyn().then(hero => this.hero = hero);
+        this.heroService.getHeroes().then(heroes => this.heroes = heroes);
+    }
+}
+app.heroes.component.html
+<div>
+  <ul class="heroes">
+    <li *ngFor="let hero of heroes">
+      <app-hero-details [hero]="hero"></app-hero-details>
+    </li>
+  </ul>
+</div>
+
+app.hero.component.ts
+/**
+ * Hero details component: Act as child component to Heroes Component
+ */
+import { Component, Input } from '@angular/core';
+import { Hero } from './hero';
+
+@Component({
+    selector: 'app-hero-details',
+    styleUrls: ['app.heroes.component.css'],
+    template: `<div *ngIf="hero">
+                <span class="badge">
+                  {{hero.id}}
+                </span>
+                {{hero.name}}
+                </div>
+                `
+})
+export class HeroComponent {
+    @Input()
+    hero: Hero;
+}
+Dynamic props:
+ Based on event we can pass property -to be discussed
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+ Event Binding:
+ >Adding Event listener to User Interface.
+
+Event handling:
+..............
+Event is handling is one the dom feature.
+Every element in html has assoicated with events.
+Events are represented by "Event" object
+Every element inherits by default Event Object.
+
+How to implement handling?
+1.event binding-GUI - mouse,keyboard,touch,voice
+According to w3c, events are just apis/ functions,having
+naming convention on+EventName -onclick,onkeypress.....
+
+2.event listening/handling
+ If event is given on dom element,the event should be handled
+ listener,cb,subscribers.
+ listeners are function,takes arg called "Event Object Reference"
+
+ JS:
+ <input type="button" onclick="Update()">
+ function Update(event){
+
+ }
+
+<input type="button" id="savebtn" >
+document.getElementById("savebtn").addEventListener('click',Update);
+
+
+Angular Event bindingg:
+<input type="button" (click)="update()" >
+
+export class AppComponent{
+    //method
+    update(evt){
+
+    }
+}
+Dynamic pros:
+app.herodesc.component.ts
+import { Component, Input } from '@angular/core';
+import { Hero } from './hero';
+@Component({
+    selector: 'app-herodesc',
+    template: `<div class="col-md-8" *ngIf="selectedHero">
+                <h1>{{selectedHero.name}}</h1>
+              </div>`
+})
+export class HeroDescriptionComponent {
+    @Input()
+    selectedHero: Hero;
+}
+app.herodesc.component.component.html
+<div>
+  <div class="col-md-4">
+    <ul class="heroes">
+      <li *ngFor="let hero of heroes" (click)="onSelect(hero)">
+        <app-hero-details [heroObj]="hero"></app-hero-details>
+      </li>
+    </ul>
+  </div>
+  <!--Dynamic Props -->
+  <app-herodesc [selectedHero]="selectedHero"></app-herodesc>
+
+</div>
+
+app.heroes.component.ts
+import { Component, OnInit } from '@angular/core';
+import { HeroService } from './app.hero.service';
+
+@Component({
+    selector: 'app-hero',
+    templateUrl: 'app.heroes.component.html',
+    styleUrls: ['app.heroes.component.css'],
+    //providers: [HeroService] //component level
+})
+export class HeroesComponent implements OnInit {
+    // Add Constructor to grab HeroService Object
+    /**
+     * The Object Reference must be accessible as a Constructor
+     * arg.
+     * The Object Reference can be private or public
+     */
+    // declare handle variable which is used by template to refer data
+    heroes;
+    selectedHero;
+    constructor(private heroService: HeroService) { }
+    ngOnInit() {
+        // this.heroService.getHeroAsyn().then(hero => this.hero = hero);
+        this.heroService.getHeroes().then(heroes => this.heroes = heroes);
+    }
+    // Event Listener
+    onSelect(hero) {
+        console.log(hero);
+        this.selectedHero = hero;
+    }
+}
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+class Binding and Style Binding:
+................................
+
+How to add css to html element?
+.mycolor{
+    color:red;
+}
+>class
+ <h1 class="mycolor">Hello</h1>
+>style
+ <h1 style="color:red">Hello</h1>
+
+How to add css classes dynamically?
+ class binding.
+
+   [class.classname]="boolean expression"
+  <p [class.special]="isSpecial">I am Special</p>
+      If isSpecial is true add special class else remove
+ styles: [`
+      .special{
+         color:green;
+         background-color:blue;
+      }
+  `]
+
+ 2.style 
+    [style.styleattribute]="booleanexp"
+  Style Binding
+   Adding inline-style attribute dynamically
+  <button [style.color]="isSpecial ? 'red' : 'green'">
+  <button style="color:red">
+ export class AppComponent {
+   isSpecial: boolean = false;
+ }
+
+3.Property syntax is used to add html attributes dynamically.
+  [htmlattributes]="booleanexpression"
+  disabled,hidden
+  <button [disabled]="booleanexpression">Save</button>
+  Attribute binding 
+   <p [hidden]="true">Secret</p>
+   <button [disabled]="isUnchanged">Save</button>
+   <button [attr.aria-label]="help">help</button>
+export class AppComponent {
+  isUnchanged: boolean = true;
+}
