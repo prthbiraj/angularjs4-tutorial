@@ -1,0 +1,693 @@
+Pipe:
+data is date
+new Date()
+What is Pipe?
+Data filter.
+ >converting data from one format to another formate.
+
+How to use pipe?
+Angular provides built in pipes.
+>uppercase,currency,date.......
+Pipes are used in template.
+
+{{expression | nameofthepipe}}
+{{name |uppercase}}
+Pipe can take parameter - Paramertized pipe
+parameters are custom functions
+{{date | date:"MM/dd/yy h:m:s"}}
+
+Chaning Pipe:
+............
+ {{doj | date:'dd/MM/yy' | uppercase}
+
+How to create custom Pipe?
+
+Pipe is  just object like other other objects.
+
+Custom Pipe:
+
+import { Pipe, PipeTransform } from '@angular/core';
+/*
+ * Raise the value exponentially
+ * Takes an exponent argument that defaults to 1.
+ * Usage:
+ *   value | exponentialStrength:exponent
+ * Example:
+ *   {{ 2 |  exponentialStrength:10}}
+ *   formats to: 1024
+*/
+app.pipe.ts
+@Pipe({name: 'exponentialStrength'})
+export class ExponentialStrengthPipe implements PipeTransform {
+  transform(value: number, exponent: string): number {
+    let exp = parseFloat(exponent);
+    return Math.pow(value, isNaN(exp) ? 1 : exp);
+  }
+}
+app.module.ts
+import {ExponentialStrengthPipe} from './app.pipe.ts'
+
+declartions:[ExponentialStrengthPipe]
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Attribute Directives:
+.....................
+<h1 style="" class="" myattribute >
+                         |
+                         Yes
+Attribute Directives proivides extra functionality on existing element.
+How to write Attribute Directive?
+>Attribute itself object.
+>Attribute helps to do DOM manipulation.
+>Attribute Directives(Angular) use jquery(JQlight thin wrapper of Jquery) for imperative dom manipulation.
+
+Steps to implement Directive.
+
+<p myHighlight>Highlight me!</p>
+myHighlight- attribute directive
+
+app.herohighlight.directive.ts
+
+import { Directive, ElementRef } from '@angular/core';
+/**
+ * Directive is decorator
+ * ElementRef is object which points DOM reference(JqLight wrapper)
+ * Getting DOM Object Reference:
+ * <h1 myHighlight>Hello</h1>
+ */
+
+@Directive({ selector: '[myHighlight]' })
+export class HighlightDirective {
+    constructor(element: ElementRef) {
+        element.nativeElement.style.backgroundColor = 'pink';
+    }
+}
+app.module.ts
+import { HighlightDirective } from './app.herohightlight.directive';
+ declarations: [
+        HighlightDirective ]
+Using
+<h1 myHighlight>Hello</h1>
+
+How to add Event Listener to Directive?
+
+@HostListener Decorator which helps to add Listener to attribute
+Directives
+import { Directive, ElementRef, HostListener } from '@angular/core';
+/**
+ * Directive is decorator
+ * ElementRef is object which points DOM reference(JqLight wrapper)
+ * Getting DOM Object Reference:
+ * <h1 myHighlight>Hello</h1>
+ */
+
+@Directive({ selector: '[myHighlight]' })
+export class HighlightDirective {
+    constructor(private element: ElementRef) {
+        element.nativeElement.style.backgroundColor = 'pink';
+    }
+
+    @HostListener('mouseenter') onMouseEnter() {
+        this.element.nativeElement.style.backgroundColor = 'yellow';
+    }
+
+    @HostListener('mouseleave') onMouseLeave() {
+        this.element.nativeElement.style.backgroundColor = 'pink';
+    }
+
+}
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Routing and Navigation : Single Page Application Development:
+.............................................................
+
+Single Page Application - SPA:
+ In 2008 HTML 5 Spec was released,SPA.
+
+SPA Features:
+>no mulitiple physical html pages.
+>there is no new url redirection 
+>Navigation(direction) controlled by browser only.
+>spa powered by javascript
+>Spa works based on DOM ADDING and removal concept
+>SPA works on core javascript browser objects- history and location
+ >history object maintains navigation
+ >location object maintains location information (urls and url parameters)
+
+How to develop SPA Application?
+You can use pure javascript,css3,html5 
+but 
+the challange is complexity
+So that we prefre frameworks and libs
+Angular provides execllant wrapper for history and location objects
+
+SPA program
+|
+RoutingModule
+ |
+location,History
+ |
+Browser
+
+SPA Core Idea:
+
+>URLS
+URL Patterns:
+>Static application
+  http://www.example.com/index.html / customer.html
+>Dynamic web application
+  http://www.example.com/login.aspx / login.jsp / login.php
+
+>Resource based web application
+ http://www.example.com/customers  - Get Customers data
+
+>SPA web Application
+ http://www.example.com/index.html#customer
+                                  |
+                                  hash bang notation
+ http://www.example.com/customer - valid
+
+General URL notations:
+
+http://www.example.com/customer
+ >Get Customer View
+http://www.example.com/customers
+ >Get Customers View
+ http://www.example.com/customers/10 - url parameters
+ >Get Customer having id 10 and display that View
+ http://www.example.com/customers?location=mumbai&&radius=100
+ >Get Customer View based on data filtering
+
+ Navigation basics:
+ >>>>>>>>>>>>>>>>>>
+ >hyperlink based navigation.
+   >menus
+     /locations
+       >mumbai
+       >chennai
+       >banaglore
+   >Submenus - nested navgiation
+     /locations/mumbai
+         >west
+         >south
+         >east
+    /locations/mumbai/west
+       >Tata Hotel
+ >programetic navigation.
+
+
+
+>once url matches,display view
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Angular Navigation:
+Angular provides navigation in  a module called "@angular/router"
+
+@angular/router
+----------------
+>modules
+
+>objects
+
+>builtin components
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+We are going to create a submodule for routing.
+
+Building Blocks of Routing:
+..........................
+1.<base href>
+ base href is tag must be available in index.html
+
+2.Router imports
+
+>Create a separate user defined module.-submodule
+
+How to create Module?
+submoudle itself is object
+app-routing.module.ts
+/**
+ * Sub module for routing
+ */
+import { NgModule } from '@angular/core';
+
+
+@NgModule({
+    declarations: [],
+    imports: [],
+    providers: [],
+    exports: [AppRoutingModule] // module visibilty
+})
+export class AppRoutingModule {
+}
+app.module.ts
+import { AppRoutingModule } from './app-routing.module';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule
+  ],
+)
+
+3.Configuration
+
+URL Mapping /Path Mapping:
+..........................
+[/profile ---- render profile view
+/profile/1 --->render profile detail view
+/skills/javascript
+  javascript  ---------render javascript detail view
+  dotnet
+  java
+  mobile
+  dataany]
+
+Router Module:
+import { RouterModule, Routes } from '@angular/router';
+
+//create configuration:
+const routes: Routes =[
+  //http://localhost:4200/dashboard
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'heroes', component: HeroesComponent}
+]
+
+How to inject route configuration inside imports
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+
+
+Component Creation:
+1.dashboard.component
+2.heroes.component
+
+RouterModule injection should be done along with RouterConfiguration
+
+imports: [RouterModule.forRoot(routes)],
+
+Router configuration is collection of Routes Object
+
+4.Router links
+    Router link is attribute directive is added in a tag
+  <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+  <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
+
+5.Router outlet
+ <router-outlet></router-outlet>
+ It is a component which takes care of Place holder
+
+Full Code: Basic Routing
+app.routing.module.ts
+/**
+ * Sub module for routing
+ */
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HeroesComponent } from './app.heroes.component';
+import { DashBoardComponent } from './app.dashboard.component';
+import { CommonModule } from '@angular/common';
+
+// Configuration  - Url with View Mapping
+/**
+ * http://localhost:4200/heroes -
+ */
+const routes: Routes = [
+    { path: 'heroes', component: HeroesComponent },
+    { path: 'dashboard', component: DashBoardComponent }
+];
+
+@NgModule({
+    declarations: [],
+    imports: [CommonModule, RouterModule.forRoot(routes)], //inject Router
+    exports: [RouterModule] // module visibilty:changes in 5.x
+})
+export class AppRoutingModule {
+}
+
+app.component.html
+<div class="container">
+  <div class="jumbotron">
+    <app-header [title]="'Heroes Tour  Application'"></app-header>
+  </div>
+  <div class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <li>
+        <a routerLink="/heroes" class="nav-link">Heroes</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+      </li>
+    </ul>
+  </div>
+  <!--Place Holder :It is built in component -->
+  <router-outlet></router-outlet>
+  <!--<app-hero></app-hero>-->
+</div>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Nested Routing:
+..............
+ {
+    path: 'skills', component: SkillsComponent,
+    children: [
+      {
+        path: '', redirectTo: 'shooting', pathMatch: 'full'
+      },
+      {
+        path: 'flying', component: FlyingComponent
+      },
+      {
+        path: 'shooting', component: ShootingComponent
+      }
+    ]
+  }
+ Skils
+   >shooting
+   >flying
+   
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/heroes -static
+/skills/shooting - sub menu
+/heroes/
+
+
+import 'rxjs/add/operator/switchMap';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Location } from '@angular/common';
+import { Hero } from './hero';
+import { HeroService } from './app.hero.service';
+
+@Component({
+    selector: 'app-herodetail',
+    templateUrl: './app.hero-detail.component.html',
+})
+export class HeroDetailComponent implements OnInit {
+    hero: Hero;
+
+    constructor(
+        private heroService: HeroService,
+        private route: ActivatedRoute,
+        private location: Location
+    ) { }
+
+    ngOnInit(): void {
+        this.route.paramMap
+            .switchMap((params: ParamMap) => this.heroService.getHero(+params.get('id')))
+            .subscribe(hero => this.hero = hero);
+    }
+
+    goBack(): void {
+        this.location.back();
+    }
+}
+<div *ngIf="hero">
+  <h2>{{hero.name}} details!</h2>
+  <div>
+    <label>id: </label>{{hero.id}}</div>
+  <div>
+    <label>name:{{hero.name}} </label>
+  </div>
+  <button (click)="goBack()">Back</button>
+</div>
+import { Injectable } from '@angular/core';
+import { Hero } from './hero';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { catchError, map, tap } from 'rxjs/operators';
+
+@Injectable()
+export class HeroService {
+    // object-data
+    private hero: Hero = {
+        id: 1,
+        name: 'Rubber Man'
+    };
+    private heroes: Hero[] = [
+        {
+            id: 1,
+            name: 'Rubber Man'
+        },
+        {
+            id: 2,
+            name: 'Spider Man'
+        },
+        {
+            id: 3,
+            name: 'Wolf Man'
+        }
+    ];
+    heroesUrl = 'http://localhost:8081/api/heroes';
+
+    constructor(private http: HttpClient) { }
+
+    // //syn api to return Hero
+    getHero(): Hero {
+        return this.hero;
+    }
+    //Asyn 
+    getHeroAsyn(): Promise<Hero> {
+        return new Promise(resolve => {
+            // Simulate server latency with 5 second delay
+            setTimeout(() => resolve(this.hero), 5000);
+        });
+    }
+    /** GET heroes from the mock data using timer */
+    getHeroes(): Promise<Hero[]> {
+        return new Promise(resolve => {
+            // Simulate server latency with 5 second delay
+            setTimeout(() => resolve(this.heroes), 1000);
+        });
+
+    }
+    /** GET heroes from the server */
+    getHeroesByHttp(): Observable<Hero[]> {
+        return this.http.get<Hero[]>(this.heroesUrl);
+    }
+
+
+    getHero(id: number): Promise<Hero> {
+        return this.getHeroes()
+            .then(heroes => heroes.find(hero => hero.id === id));
+    }
+
+
+}
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Angular -------------------------->Controller---Service                                                 (WebService) ---Data Layer
+
+
+
+
+
+Angular----AJAX(XMLHttpRequest)
+                  |
+                Object
+                  |
+                Socket
+ HTTP - IO Stream    - Read + Write    
+ m1---------------------------------------------------------m2
+   *******************************************************
+ -----------------------------------------------------------
+  |                                                    |
+Browser                               webserver(java,.net,php)
+
+ Request(input),response(output)
+   |
+  Browser--SocketApi---javascript(XHR)
+
+How http is represented?
+
+Http is just C program  - http.c
+>protocal - set of rules data transmission.
+
+Angular provides Object-----XMLHTTP---Native Socket api----
+
+since http program,what is part of program?
+ variables +  methods
+   |           |
+Headers   HTTP methods
+Headers are just variables which values
+>content-type = "application/xml"
+
+Http methods
+>get,post,delete,put,trace,debug,options..............
+
+Aspx:
+get------>get of method http---executed---returns result
+
+Angular http.get ----->XHR get---browser--->Protocal htttp.get
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Angular and HTTP:
+Angular provides http protocal implmentation in a package
+@angular/common/http - 5
+@angular/http - 4
+
+provides http protocal module
+
+app.module.ts
+
+import { HttpClientModule } from '@angular/common/http';
+
+imports:[HttpClientModule]
+
+Objects/Built in Services of http Module:
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+HttpClient is object which contains http interaction apis
+
+      
+      
+
+    class HttpClient {
+      constructor(handler: HttpHandler)
+      request(first: string|HttpRequest<any>, url?: string, options: {...}): Observable<any>
+      delete(url: string, options: {...}): Observable<any>
+      get(url: string, options: {...}): Observable<any>
+      head(url: string, options: {...}): Observable<any>
+      jsonp<T>(url: string, callbackParam: string): Observable<T>
+      options(url: string, options: {...}): Observable<any>
+      patch(url: string, body: any|null, options: {...}): Observable<any>
+      post(url: string, body: any|null, options: {...}): Observable<any>
+      put(url: string, body: any|null, options: {...}): Observable<any>
+    }
+
+
+      let result=get(url: string, options: {...}): Observable<any>
+      result.api().api().api().subscribe()
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+WebService Setup:
+>using node.
+
+
+>express.js is web service framework written in node.
+
+server-app>npm install express --save
+
+>Create a module - app.hero.module - HeroModule
+app.module.ts
+import {HeroModule} from './app.hero.module';
+
+imports:[HeroModule]
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+How to read form input values?
+>through [(ngModel)] - through model object
+   >two way data binding.
+<input [(ngModel)]="name">
+            |
+            [] - property binding
+            () - event binding
+
+Using event object
+   var node= event.target = Which returns the Current DOM element.
+   node.property
+  incase textbox event.target.value
+ <input placeholder="type..." (keyup)="read($event)"> 
+ read(evt: any) {
+    console.log('keyboard event!');
+  }
+ read(evt: any) {
+    let value = evt.target.value;
+    console.log(value);
+ }
+ 3.Using template reference variable 
+  template: `<input #val (keyup)="test">
+                <p>{{val.value}}</p>`
+
+ <li class="nav-item">
+
+    <a routerLink="/heroform" class="nav-link">New Hero</a>
+      </li>
+
+    { path: 'heroform', component: HeroFormComponent }
+
+
+import { Component } from '@angular/core';
+
+import { Hero } from './hero';
+
+@Component({
+  selector: 'hero-form',
+  templateUrl: './hero-form.component.html'
+})
+export class HeroFormComponent {
+
+  powers = ['Really Smart', 'Super Flexible',
+    'Super Hot', 'Weather Changer'];
+
+  model = new Hero(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
+
+  submitted = false;
+
+  onSubmit() { this.submitted = true; }
+
+  newHero() {
+    this.model = new Hero(42, '', '');
+  }
+}
+<div class="container">
+  <div [hidden]="submitted">
+    <h1>Hero Form</h1>
+    <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name"
+         required [(ngModel)]="model.name" name="name" #name="ngModel">
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+          Name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="alterEgo">Alter Ego</label>
+        <input type="text" class="form-control"
+         id="alterEgo" 
+         [(ngModel)]="model.alterEgo" name="alterEgo">
+      </div>
+
+      <div class="form-group">
+        <label for="power">Hero Power</label>
+        <select class="form-control" id="power" required [(ngModel)]="model.power" name="power" #power="ngModel">
+          <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+        </select>
+        <div [hidden]="power.valid || power.pristine" class="alert alert-danger">
+          Power is required
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Submit</button>
+      <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button>
+    </form>
+  </div>
+
+  <div [hidden]="!submitted">
+    <h2>You submitted the following:</h2>
+    <div class="row">
+      <div class="col-xs-3">Name</div>
+      <div class="col-xs-9  pull-left">{{ model.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Alter Ego</div>
+      <div class="col-xs-9 pull-left">{{ model.alterEgo }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Power</div>
+      <div class="col-xs-9 pull-left">{{ model.power }}</div>
+    </div>
+    <br>
+    <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+  </div>
+</div>
+
+import { FormsModule } from '@angular/forms';
+
